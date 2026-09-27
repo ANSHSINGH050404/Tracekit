@@ -1,0 +1,23 @@
+{
+  "name": "tracekit-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first observability and replay tool for AI coding agents",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "pnpm -r exec tsc --noEmit",
+    "clean": "pnpm -r exec rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.6"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@12.4.2"
+}

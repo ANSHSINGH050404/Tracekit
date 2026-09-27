@@ -1,0 +1,26 @@
+{
+  "name": "@agent-replay/adapter-generic",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Generic adapter for integrating arbitrary AI coding agents with Tracekit / Agent Replay",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@agent-replay/core": "workspace:*",
+    "@agent-replay/sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  }
+}

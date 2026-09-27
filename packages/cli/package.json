@@ -1,0 +1,31 @@
+{
+  "name": "@agent-replay/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Command line interface for Tracekit / Agent Replay",
+  "bin": {
+    "agent-replay": "./dist/bin.js",
+    "tracekit": "./dist/bin.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@agent-replay/core": "workspace:*",
+    "@agent-replay/sdk": "workspace:*",
+    "commander": "^13.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  }
+}
