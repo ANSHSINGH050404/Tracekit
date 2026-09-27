@@ -51,7 +51,7 @@
     "@tracekit/core": "workspace:*",
     "@tracekit/sdk": "workspace:*",
     "@tracekit/viewer": "workspace:*",
-    "commander": "^13.1.0"
+    "commander": "^15.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.5",
