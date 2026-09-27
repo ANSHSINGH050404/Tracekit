@@ -1,19 +1,39 @@
 # Tracekit SDK Documentation
 
-The Tracekit SDK (`@agent-replay/sdk` / `tracekit`) provides a high-level, developer-friendly interface to record and inspect AI coding agent executions.
+The Tracekit SDK (`@tracekit/sdk`) provides a high-level, developer-friendly
+interface to record and inspect AI coding agent executions.
+
+> **Before you reach for the SDK:** if you don't own the agent loop, use
+> [`tracekit wrap`](wrap.md). It records an agent you don't control, with no code
+> changes. The SDK is for when you own the loop and want model calls and
+> per-tool-call detail.
 
 ## Installation
 
 ```bash
-pnpm add @agent-replay/sdk
+pnpm add @tracekit/sdk
 # or
-npm install @agent-replay/sdk
+npm install @tracekit/sdk
 ```
+
+Tracekit is not published to npm yet (see the [Status](../README.md#status) section
+in the README). Until the first release, clone the repository and build it:
+
+```bash
+git clone https://github.com/ANSHSINGH050404/Tracekit.git
+cd Tracekit
+pnpm install && pnpm build
+```
+
+Then depend on it by path: `"@tracekit/sdk": "file:../Tracekit/packages/sdk"`.
+
+Note: install `@tracekit/sdk`, not `tracekit` — an unrelated package named
+`tracekit` already exists on npm.
 
 ## Quick Start
 
 ```typescript
-import { Replay } from "@agent-replay/sdk";
+import { Replay } from "@tracekit/sdk";
 
 // Initialize a recorded run
 const replay = await Replay.start({
@@ -59,7 +79,7 @@ Starts a new recording session.
 - `project: string` (required): Name of the project or service.
 - `task?: string`: Natural language task description.
 - `runId?: string`: Custom run ID. If omitted, a unique ID is generated.
-- `storageDir?: string`: Base directory for storage (defaults to `.agent-replay`).
+- `storageDir?: string`: Base directory for storage (defaults to `.tracekit`).
 - `redact?: string[]`: Array of environment variables, secret strings, or object property keys to redact.
 - `patterns?: RegExp[]`: Custom regular expressions to detect and scrub secrets.
 - `captureGit?: boolean`: Whether to capture initial and final git snapshots (defaults to `true`).

@@ -185,6 +185,12 @@ interface FileWriteEvent extends BaseEvent {
     diff?: string;
     beforeHash?: string | null;
     afterHash?: string;
+    /**
+     * Set when the file changed but its content was not stored, because it is
+     * binary or larger than the capture size limit. Emitted by `tracekit wrap`;
+     * the SDK always records full content.
+     */
+    contentOmitted?: string;
   };
 }
 

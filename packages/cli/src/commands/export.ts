@@ -1,5 +1,5 @@
 import { promises as fs } from "node:fs";
-import { FsReplayStore, type AgentEvent } from "@agent-replay/core";
+import { FsReplayStore, type AgentEvent } from "@tracekit/core";
 
 export interface ExportCommandOptions {
   dir?: string;

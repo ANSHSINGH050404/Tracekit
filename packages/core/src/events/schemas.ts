@@ -170,6 +170,8 @@ export const FileWritePayloadSchema = z.object({
   diff: z.string().optional(),
   beforeHash: z.string().nullable().optional(),
   afterHash: z.string().optional(),
+  /** Set when the file changed but its content was not stored (binary or over the size cap). */
+  contentOmitted: z.string().optional(),
 });
 
 export const FileWriteEventSchema = BaseEventSchema.extend({

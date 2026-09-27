@@ -2,20 +2,20 @@
 
 ## Architecture Overview
 A modular TypeScript monorepo using pnpm workspaces:
-- `packages/core`: Event schema (Zod), Run model, Git snapshot utilities, Diff generator, Redaction engine, Storage interface & FsReplayStore.
+- `packages/core`: Event schema (Zod), Run model, Git snapshot utilities, Diff generator, Redaction engine, Storage interface & FsReplayStore, worktree capture/diff, run comparison.
 - `packages/sdk`: High-level developer SDK (`Replay` / `Tracekit`), tool wrappers, command executor/streamer, filesystem helpers, lifecycle management.
-- `packages/cli`: `agent-replay` and `tracekit` command-line tools (`list`, `inspect`, `export`, `events`, `compare`, `ui`), tabular formatters, diff rendering.
-- `packages/viewer`: Vite + React + Tailwind/CSS modern dark-themed local UI for exploring runs, visual timelines, diff viewer, stdout/stderr logs, token usage.
-- `adapters/generic`: AgentAdapter interface and GenericAgentAdapter implementation.
+- `packages/cli`: The `tracekit` binary (`wrap`, `list`, `inspect`, `export`, `events`, `compare`, `ui`), tabular formatters, diff rendering, local UI server.
+- `packages/viewer`: Vite + React + Tailwind/CSS modern dark-themed local UI for exploring runs, visual timelines, diff viewer, stdout/stderr logs, token usage. Published as static assets and bundled into the CLI.
+- `adapters/generic`: AgentAdapter interface and GenericAgentAdapter implementation (a reference implementation and contribution template, not a working integration).
 - `examples/`: Runnable agent simulation example showing how to record an agent task.
-- `docs/`: Comprehensive documentation suite.
+- `docs/`: Documentation suite.
 
 ## Phase 1: Workspace & Build Configuration
 1. Initialize Git repository in `Tracekit`.
 2. Root `package.json`, `pnpm-workspace.yaml`, root `tsconfig.json`.
 3. Configure Vitest and TypeScript build configs with ESM.
 
-## Phase 2: Core Package (`@agent-replay/core` / `@tracekit/core`)
+## Phase 2: Core Package (`@tracekit/core` / `@tracekit/core`)
 1. Event Protocol: Zod schemas & TypeScript types for:
    - BaseEvent
    - agent.started, agent.finished
@@ -37,7 +37,7 @@ A modular TypeScript monorepo using pnpm workspaces:
    - Hash calculations (SHA-256)
 5. Storage:
    - `ReplayStore` interface
-   - `FsReplayStore`: Directory structure `.agent-replay/runs/<run-id>/`
+   - `FsReplayStore`: Directory structure `.tracekit/runs/<run-id>/`
    - Atomic file writes for `run.json`
    - Incremental streaming append for `events.jsonl`
    - Corrupted JSONL line handling (skips malformed lines gracefully)
@@ -45,7 +45,7 @@ A modular TypeScript monorepo using pnpm workspaces:
 6. Run comparison engine:
    - Statistical comparator calculating duration, event counts, tool calls, commands, files modified, token usage.
 
-## Phase 3: SDK Package (`@agent-replay/sdk`)
+## Phase 3: SDK Package (`@tracekit/sdk`)
 1. `Replay` / `Tracekit` class:
    - `Replay.start(options)`: initializes store, captures initial git snapshot, starts run, emits `agent.started`.
    - `replay.event(type, payload)`: validates, redacts, writes to store.
@@ -76,9 +76,10 @@ A modular TypeScript monorepo using pnpm workspaces:
    - Run comparison view.
 3. Build Vite bundle to static dist assets.
 
-## Phase 6: CLI Package (`@agent-replay/cli`)
-1. Commander-based CLI with aliases `agent-replay` and `tracekit`.
+## Phase 6: CLI Package (`@tracekit/cli`)
+1. Commander-based CLI exposing the `tracekit` binary.
 2. Commands:
+   - `wrap <command...>`: record any subprocess with no instrumentation. Tees stdout/stderr, diffs the git worktree before/after, propagates the child's exit code and signals.
    - `list`: formatted table of runs.
    - `inspect <run-id>`: pretty summary with event tree and files changed.
    - `export <run-id>`: JSON export of run + events.
@@ -94,9 +95,11 @@ A modular TypeScript monorepo using pnpm workspaces:
    - `docs/sdk.md`
    - `docs/storage.md`
    - `docs/adapters.md`
+   - `docs/wrap.md`
    - `docs/redaction.md`
-   - `docs/contributing.md`
-3. Comprehensive `README.md` and `LICENSE`.
+   - `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`
+3. `README.md` with an honest status section, verified sample output, and roadmap.
+4. `LICENSE` (MIT).
 
 ## Phase 8: Testing & Verification
 1. Comprehensive Vitest suite for:
@@ -106,6 +109,20 @@ A modular TypeScript monorepo using pnpm workspaces:
    - Filesystem storage (concurrency, corrupted JSONL, atomic updates)
    - SDK lifecycle, tool execution, command execution
    - Comparison engine
+   - Worktree capture/diff (gitignore, binary, size cap, spaces in paths)
+   - `wrap` (output ordering, exit-code propagation, diff accuracy, empty command)
    - CLI commands
 2. Build verification: `pnpm build` across all packages.
-3. End-to-end test with example run and CLI verification.
+3. Typecheck verification: `pnpm typecheck`.
+4. End-to-end test with example run and CLI verification.
+
+## Phase 9: Distribution & Adoption
+1. Publishable metadata on every package: `files`, `publishConfig`, `license`,
+   `repository`, `bugs`, and `types`-first `exports` maps.
+2. `@tracekit/viewer` published as static assets and depended on by the CLI, so
+   `tracekit ui` works from an install rather than a monorepo checkout.
+3. CI workflow (Node 20/22, typecheck + test + build) with a tarball-content
+   guard that fails if a declared entrypoint was never built.
+4. Changesets-based release workflow with npm provenance.
+5. Dependabot for npm and GitHub Actions.
+6. `CONTRIBUTING.md` centred on the adapter contribution template.

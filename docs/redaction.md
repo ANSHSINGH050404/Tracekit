@@ -37,7 +37,7 @@ Tracekit automatically identifies and redacts:
 Configure custom redactions when starting a replay run:
 
 ```typescript
-import { Replay } from "@agent-replay/sdk";
+import { Replay } from "@tracekit/sdk";
 
 const replay = await Replay.start({
   project: "my-service",

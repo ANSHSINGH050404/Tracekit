@@ -1,4 +1,4 @@
-import { FsReplayStore, formatDuration } from "@agent-replay/core";
+import { FsReplayStore, formatDuration } from "@tracekit/core";
 
 export interface ListCommandOptions {
   dir?: string;

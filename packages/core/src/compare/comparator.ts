@@ -127,8 +127,14 @@ export function formatComparisonTable(comparison: RunComparison): string {
   ];
 
   const colWidths = [18, 24, 24];
+  const truncate = (value: string, width: number) =>
+    value.length > width ? `${value.slice(0, width - 1)}…` : value;
   const formatRow = (col1: string, col2: string, col3: string) => {
-    return `${col1.padEnd(colWidths[0])} ${col2.padEnd(colWidths[1])} ${col3.padEnd(colWidths[2])}`;
+    return [
+      truncate(col1, colWidths[0]).padEnd(colWidths[0]),
+      truncate(col2, colWidths[1]).padEnd(colWidths[1]),
+      truncate(col3, colWidths[2]).padEnd(colWidths[2]),
+    ].join(" ");
   };
 
   const header = formatRow("", `Run A (${runA.runId})`, `Run B (${runB.runId})`);

@@ -13,7 +13,7 @@ import {
   getGitSnapshot,
   computeUnifiedDiff,
   computeHash,
-} from "@agent-replay/core";
+} from "@tracekit/core";
 
 export interface ReplayStartOptions extends RedactionOptions {
   project: string;
@@ -31,6 +31,8 @@ export interface ReplayStartOptions extends RedactionOptions {
 }
 
 export interface CommandContext {
+  /** Identifier shared by this command's started/stdout/stderr/finished events. */
+  commandId: string;
   stdout: (data: string) => Promise<void>;
   stderr: (data: string) => Promise<void>;
 }
@@ -280,6 +282,7 @@ export class Replay {
     let totalStderr = "";
 
     const ctx: CommandContext = {
+      commandId,
       stdout: async (data: string) => {
         totalStdout += data;
         await this.event({

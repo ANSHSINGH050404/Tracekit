@@ -4,10 +4,10 @@ Tracekit adheres to a strictly local-first, zero-database persistence architectu
 
 ## Directory Structure
 
-By default, Tracekit stores runs in `.agent-replay/` relative to the current working directory (or a custom path passed via `--dir` / `storageDir`):
+By default, Tracekit stores runs in `.tracekit/` relative to the current working directory (or a custom path passed via `--dir` / `storageDir`):
 
 ```text
-.agent-replay/
+.tracekit/
   runs/
     <run-id>/
       run.json

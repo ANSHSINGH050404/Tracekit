@@ -1,31 +1,63 @@
 {
-  "name": "@agent-replay/cli",
+  "name": "@tracekit/cli",
   "version": "0.1.0",
   "type": "module",
-  "description": "Command line interface for Tracekit / Agent Replay",
+  "description": "Record, inspect and compare AI coding agent runs locally",
+  "license": "MIT",
+  "author": "Tracekit Contributors",
+  "homepage": "https://github.com/ANSHSINGH050404/Tracekit#readme",
+  "bugs": {
+    "url": "https://github.com/ANSHSINGH050404/Tracekit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ANSHSINGH050404/Tracekit.git",
+    "directory": "packages/cli"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "observability",
+    "tracing",
+    "llm",
+    "replay",
+    "cli"
+  ],
   "bin": {
-    "agent-replay": "./dist/bin.js",
     "tracekit": "./dist/bin.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsc -b",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@agent-replay/core": "workspace:*",
-    "@agent-replay/sdk": "workspace:*",
+    "@tracekit/core": "workspace:*",
+    "@tracekit/sdk": "workspace:*",
+    "@tracekit/viewer": "workspace:*",
     "commander": "^13.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.5",
     "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

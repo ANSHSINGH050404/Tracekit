@@ -3,7 +3,7 @@ import {
   compareRuns,
   formatComparisonTable,
   type AgentEvent,
-} from "@agent-replay/core";
+} from "@tracekit/core";
 
 export interface CompareCommandOptions {
   dir?: string;

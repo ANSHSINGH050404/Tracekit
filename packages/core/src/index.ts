@@ -5,3 +5,4 @@ export * from "./git/index.js";
 export * from "./diff/index.js";
 export * from "./storage/index.js";
 export * from "./compare/index.js";
+export * from "./worktree/index.js";

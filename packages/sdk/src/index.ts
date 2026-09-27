@@ -1,2 +1,2 @@
 export * from "./replay.js";
-export * from "@agent-replay/core";
+export * from "@tracekit/core";

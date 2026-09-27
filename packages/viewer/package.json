@@ -1,8 +1,37 @@
 {
-  "name": "@agent-replay/viewer",
+  "name": "@tracekit/viewer",
   "version": "0.1.0",
   "type": "module",
-  "description": "Local-first visual timeline and inspector for Tracekit / Agent Replay",
+  "description": "Local web viewer for Tracekit runs (shipped as static assets, not a JS library)",
+  "license": "MIT",
+  "author": "Tracekit Contributors",
+  "homepage": "https://github.com/ANSHSINGH050404/Tracekit#readme",
+  "bugs": {
+    "url": "https://github.com/ANSHSINGH050404/Tracekit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ANSHSINGH050404/Tracekit.git",
+    "directory": "packages/viewer"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "observability",
+    "tracing",
+    "llm",
+    "replay"
+  ],
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -14,11 +43,14 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@agent-replay/core": "workspace:*",
+    "@tracekit/core": "workspace:*",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.7.3",
     "vite": "^6.2.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

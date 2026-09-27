@@ -1,4 +1,4 @@
-import { Replay } from "@agent-replay/sdk";
+import { Replay } from "@tracekit/sdk";
 
 async function main() {
   console.log("⚡ Starting simulated AI coding agent run with Tracekit recording...\n");
@@ -113,7 +113,7 @@ async function main() {
   console.log(`\n✓ Run recorded successfully!`);
   console.log(`Run ID:   ${finishedRun.id}`);
   console.log(`Duration: ${finishedRun.finishedAt! - finishedRun.startedAt}ms`);
-  console.log(`Inspect with: pnpm --filter @agent-replay/cli exec node ./dist/bin.js inspect ${finishedRun.id}`);
+  console.log(`Inspect with: pnpm tracekit inspect ${finishedRun.id}`);
 }
 
 main().catch((err) => {

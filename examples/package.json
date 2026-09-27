@@ -4,11 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "demo": "node ./dist/demo-agent.js"
+    "build": "tsc -b",
+    "demo": "node ./dist/demo-agent.js",
+    "clean": "rimraf dist"
   },
   "dependencies": {
-    "@agent-replay/core": "workspace:*",
-    "@agent-replay/sdk": "workspace:*"
+    "@tracekit/core": "workspace:*",
+    "@tracekit/sdk": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.13.5",

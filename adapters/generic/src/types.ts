@@ -1,4 +1,4 @@
-import type { AgentEvent } from "@agent-replay/core";
+import type { AgentEvent } from "@tracekit/core";
 
 /**
  * Standard interface that any agent adapter must implement.

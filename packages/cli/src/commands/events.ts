@@ -1,4 +1,4 @@
-import { FsReplayStore } from "@agent-replay/core";
+import { FsReplayStore } from "@tracekit/core";
 
 export interface EventsCommandOptions {
   dir?: string;

@@ -1,12 +1,13 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { promises as fs, statSync } from "node:fs";
-import { join, resolve, extname } from "node:path";
+import { join, resolve, extname, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 import {
   FsReplayStore,
   compareRuns,
   type AgentEvent,
-} from "@agent-replay/core";
+} from "@tracekit/core";
 
 const MIME_TYPES: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -31,33 +32,34 @@ export function findViewerDistDir(customStaticDir?: string): string {
     return resolve(customStaticDir);
   }
 
+  // Installed layout: @tracekit/viewer is a real dependency of @tracekit/cli, so
+  // resolve its package.json rather than guessing at relative paths.
+  try {
+    const require = createRequire(import.meta.url);
+    const viewerPkg = require.resolve("@tracekit/viewer/package.json");
+    const dist = join(dirname(viewerPkg), "dist");
+    if (statSync(dist).isDirectory()) {
+      return dist;
+    }
+  } catch {
+    // fall through to the monorepo layout below
+  }
+
+  // Monorepo development layout: packages/cli/dist/server -> packages/viewer/dist
   const currentDir = typeof import.meta.dirname !== "undefined"
     ? import.meta.dirname
     : fileURLToPath(new URL(".", import.meta.url));
 
-  const candidates = [
-    // Monorepo development layout
-    resolve(currentDir, "../../../viewer/dist"),
-    resolve(currentDir, "../../viewer/dist"),
-    // Installed as node_modules
-    resolve(currentDir, "../node_modules/@agent-replay/viewer/dist"),
-    // In current working directory
-    resolve(process.cwd(), "packages/viewer/dist"),
-    resolve(process.cwd(), "node_modules/@agent-replay/viewer/dist"),
-  ];
-
-  for (const candidate of candidates) {
-    try {
-      const stats = statSync(candidate);
-      if (stats.isDirectory()) {
-        return candidate;
-      }
-    } catch {
-      // try next
-    }
+  const monorepoDist = resolve(currentDir, "../../../viewer/dist");
+  if (statSync(monorepoDist, { throwIfNoEntry: false })?.isDirectory()) {
+    return monorepoDist;
   }
 
-  return candidates[0];
+  throw new Error(
+    "Could not locate the Tracekit viewer assets. The @tracekit/viewer package " +
+      "appears to be missing or was not built. Try reinstalling, or pass an " +
+      "explicit path with --static-dir."
+  );
 }
 
 export function createUiServer(options: UiServerOptions = {}) {
@@ -179,7 +181,7 @@ export function createUiServer(options: UiServerOptions = {}) {
       } catch {
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end(
-          `Tracekit UI static assets not found at ${staticDir}. Please run 'pnpm --filter @agent-replay/viewer run build'.`
+          `Tracekit UI static assets not found at ${staticDir}. Please run 'pnpm --filter @tracekit/viewer run build'.`
         );
       }
     }

@@ -1,6 +1,6 @@
 node_modules/
 dist/
-.agent-replay/
+.tracekit/
 *.tsbuildinfo
 coverage/
 .DS_Store

@@ -12,7 +12,7 @@ export interface ReplayStore {
 
 export interface FsReplayStoreOptions {
   /**
-   * Base directory for storing runs. Defaults to ".agent-replay".
+   * Base directory for storing runs. Defaults to ".tracekit".
    */
   baseDir?: string;
 }

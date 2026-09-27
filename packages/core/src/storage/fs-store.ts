@@ -20,7 +20,7 @@ export class FsReplayStore implements ReplayStore {
   private readonly appendLocks: Map<string, Promise<void>> = new Map();
 
   constructor(options: FsReplayStoreOptions = {}) {
-    this.baseDir = resolve(options.baseDir ?? ".agent-replay");
+    this.baseDir = resolve(options.baseDir ?? ".tracekit");
   }
 
   public getBaseDir(): string {

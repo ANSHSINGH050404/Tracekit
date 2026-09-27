@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { GenericAgentAdapter } from "../src/generic-adapter.js";
-import type { AgentEvent } from "@agent-replay/core";
+import type { AgentEvent } from "@tracekit/core";
 
 describe("Generic Agent Adapter", () => {
   it("emits events to registered listeners when started", async () => {

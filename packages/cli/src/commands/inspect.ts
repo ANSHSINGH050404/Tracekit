@@ -1,4 +1,4 @@
-import { FsReplayStore, formatDuration, type AgentEvent } from "@agent-replay/core";
+import { FsReplayStore, formatDuration, type AgentEvent } from "@tracekit/core";
 
 export interface InspectCommandOptions {
   dir?: string;
@@ -26,7 +26,7 @@ export async function inspectCommand(
     run.finishedAt && run.startedAt ? run.finishedAt - run.startedAt : 0;
   const duration = run.finishedAt ? formatDuration(durationMs) : "in progress";
 
-  console.log("Agent Replay\n");
+  console.log("Tracekit\n");
   console.log(`Run:      ${run.id}`);
   console.log(`Project:  ${run.project}`);
   console.log(`Status:   ${run.status}`);

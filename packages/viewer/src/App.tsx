@@ -54,7 +54,7 @@ export const App: React.FC = () => {
         <div className="brand">
           <div className="brand-icon">⚡</div>
           <div className="brand-title">Tracekit</div>
-          <span className="brand-subtitle">Agent Replay Inspector</span>
+          <span className="brand-subtitle">Tracekit Inspector</span>
         </div>
         <div className="header-actions">
           <span style={{ fontSize: 12, color: "var(--text-muted)" }}>

@@ -1,5 +1,5 @@
-import type { AgentEvent } from "@agent-replay/core";
-import type { Replay } from "@agent-replay/sdk";
+import type { AgentEvent } from "@tracekit/core";
+import type { Replay } from "@tracekit/sdk";
 import type { AgentAdapter } from "./types.js";
 
 export class GenericAgentAdapter implements AgentAdapter {

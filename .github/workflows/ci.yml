@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify (node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+  pack:
+    name: verify published package contents
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      # Guards against the classic OSS failure mode: the tarball ships broken
+      # because a file was never in `files`, or a dist entrypoint is missing.
+      - name: Check every package tarball has a built entrypoint
+        run: |
+          set -euo pipefail
+          for pkg in @tracekit/core @tracekit/sdk @tracekit/cli @tracekit/viewer @tracekit/adapter-generic; do
+            entry=$(node -e "const p=require.resolve('$pkg/package.json',{paths:['.']});const j=require(p);process.stdout.write(j.exports?.['.']?.import ?? '')")
+            if [ -n "$entry" ]; then
+              file="node_modules/$pkg/$entry"
+              if [ ! -f "$file" ]; then
+                echo "::error::$pkg declares entrypoint $entry but it was not built"
+                exit 1
+              fi
+            fi
+          done
+          echo "All package entrypoints resolve to built files."
+
+      - name: Smoke test the installed CLI
+        run: |
+          set -euo pipefail
+          node packages/cli/dist/bin.js --version
+          node packages/cli/dist/bin.js --help
