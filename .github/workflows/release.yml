@@ -30,7 +30,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       # Opens (or updates) a "Version Packages" PR. Merging it is the release.
-      - uses: changesets/action@v1
+      - uses: changesets/action@v2
         with:
           version: pnpm changeset version
           commit: "chore: version packages"
