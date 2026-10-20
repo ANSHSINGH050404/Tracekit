@@ -68,6 +68,13 @@ pnpm tracekit wrap -- aider --message "fix the failing auth tests"
 pnpm tracekit wrap -- claude -p "fix the failing auth tests"
 ```
 
+### See it run
+
+A real recorded session — `tracekit wrap` captures the run, then `tracekit inspect`
+reads back every event and the files it changed:
+
+![Tracekit recording an agent run and inspecting the resulting trace](assets/tracekit-demo.gif)
+
 ---
 
 ## What you get
